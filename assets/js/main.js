@@ -1,54 +1,95 @@
 $(document).ready(function()
 {
-	$('#login')
+	var $login = $('#login');
+	var $register = $('#register');
+	var $login_form = $('#login_form');
+	var $registration_form = $('#registration_form');
+	var $enter = $('#enter');
+	var $registration_submit = $('#registration_submit');
+	var $welcome_title = $('#welcome_title');
+	var $logged_in = $('#logged_in');
+	var $login_back = $('#login_back');
+	var $registration_back = $('#registration_back');
+
+	$login
 		.click(function()
 		{
-			$('#login, #register')
-				.animate({'opacity': 0}, 500);
-			setTimeout(function()
+			$login.add($register)
+				.animate({'opacity': 0}, 500)
+				.delay(500)
+				.queue(function(nxt)
+				{
+					$(this)
+						.css('display', 'none');
+					$login_form
+						.css('display', 'block')
+						.animate({'opacity': 1}, 500);
+						nxt();
+				});
+
+			/*setTimeout(function()
 			{
-				$('#login, #register')
-					.css('display', 'none');
-				$('#login_form')
+				$login_form
 					.css('display', 'block')
 					.animate({'opacity': 1}, 500);
-			}, 500);
+			}, 500);*/
 		});
 
-	$('#register')
+	$register
 		.click(function()
 		{
-			$('#login, #register')
-				.animate({'opacity': 0}, 500);
-			setTimeout(function()
+			$login.add($register)
+				.animate({'opacity': 0}, 500)
+				.delay(500)
+				.queue(function(nxt)
+				{
+					$(this)
+						.css('display', 'none');
+					$registration_form
+						.css('display', 'block')
+						.animate({'opacity': 1}, 500);	
+						nxt();
+				});
+
+			/*setTimeout(function()
 			{
-				$('#login, #register')
+				$login.add($register)
 					.css('display', 'none');
-				$('#registration_form')
+				$registration_form
 					.css('display', 'block')
 					.animate({'opacity': 1}, 500);	
-			}, 500);	
+			}, 500);	*/
 		});
 
-	$('#enter, #registration_submit')	
+	$enter.add($registration_submit)	
 		.click(function()
 		{
-			$('#welcome_title, #login_form')
-				.animate({'opacity': 0}, 500);
-			setTimeout(function()
+			$welcome_title.add($login_form)
+				.animate({'opacity': 0}, 500)
+				.delay(500)
+				.queue(function(nxt)
+				{
+					$(this)
+						.css('display', 'none');
+					$logged_in
+						.css('display', 'block')
+						.animate({'opacity': 1}, 500);	
+				});
+			
+			/*setTimeout(function()
 			{
-				$('#welcome_title, #login_form')
+				$welcome_title.add($login_form)
 					.css('display', 'none');
-				$('#logged_in')
+				$logged_in
 					.css('display', 'block')
 					.animate({'opacity': 1}, 500);			
-			}, 500);
+			}, 500);*/
 		});
 
+/*
 	$('#login_back, #registration_back')
 		.click(function()
 		{
-			if ($('form').css('opacity'
 			$('.form')
 				.animate({'opacity': 0}, 500);
 			setTimeout(function()
@@ -60,5 +101,35 @@ $(document).ready(function()
 					.animate({'opacity': 1}, 500);
 			}, 500);	
 		});
+*/
 
+	$login_back
+		.click(function()
+		{
+			$login_form
+				.animate({'opacity': 0}, 500);
+			setTimeout(function()
+			{
+				$login_form
+					.css('display', 'none');
+				$welcome_title.add($login).add($register)
+					.css('display', 'block')
+					.animate({'opacity': 1}, 500);
+			}, 500);
+		});
+
+	$registration_back
+		.click(function()
+		{
+			$registration_form
+				.animate({'opacity': 0}, 500);
+			setTimeout(function()
+			{
+				$registration_form
+					.css('display', 'none');
+				$welcome_title.add($login).add($register)
+					.css('display', 'block')
+					.animate({'opacity': 1}, 500);
+			}, 500);
+		});
 });

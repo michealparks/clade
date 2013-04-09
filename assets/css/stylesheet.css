@@ -1,5 +1,5 @@
 #welcome {
-	font-family: 'Lato';
+	font-family: 'Lato', serif;
 	text-align: center;
 	height: 10em; width: 18em;
 	margin-top: -5em; margin-left: -9em;
@@ -52,8 +52,4 @@
 
 #logged_in {
 	display: none;
-}
-
-#last {
-	margin: 20px;
 }

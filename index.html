@@ -11,14 +11,32 @@
 <script type="text/processing" data-processing-target="mycanvas">
 
 // Global variables
+
+// Counting Variables
 int count = 0;
-int numOrgs = 20;
-float radius = 50.0;
+int maxTime = 3070;
+
+int numOrgs = 15;
+float[] radius = new float[numOrgs];
 int[] X = new int[numOrgs];
 int[] Y = new int[numOrgs];
 int[] nX = new int[numOrgs];
 int[] nY = new int[numOrgs];
 int delay = 60;
+
+// Organism specific variables
+int[] orgColor1 = new int[numOrgs];
+int[] orgColor2 = new int[numOrgs];
+int[] orgColor3 = new int[numOrgs];
+int[] pulseRate = new int[numOrgs];
+
+// Organism offshoot specific variables
+float[] lineX = new float[numOrgs];
+float[] lineY = new float[numOrgs];
+float[] newLineX = new float[numOrgs];
+float[] newLineY = new float[numOrgs];
+int orgSelected = 0;
+
 
 // Setup the Processing Canvas
 void setup()
@@ -29,9 +47,9 @@ void setup()
 		setupHeight = jQuery(window).height() - 30;
 	jQuery('canvas').width(jQuery(window).width());
 	jQuery('canvas').height(setupHeight);
-	size(jQuery(window).width(), setupHeight);		
-	//size( 1000, 500 );
-	strokeWeight( 10 );
+
+	size( jQuery(window).width(), setupHeight );		
+	strokeWeight( 2 );
 	frameRate( 60 );
 
 	for (int i = 0; i < numOrgs; i++) 
@@ -40,61 +58,116 @@ void setup()
 		Y[i] = height / 2;
 		nX[i] = X[i];
 		nY[i] = Y[i];  
+
+		orgColor1[i] = random(255);
+		orgColor2[i] = random(255);
+		orgColor3[i] = random(255);
+
+		pulseRate[i] = 4;
+		radius[i] = 50.0;
+
+		lineX[i] = X[i];
+		lineY[i] = Y[i];
+		newLineX[i] = X[i];
+		newLineY[i] = Y[i];
 	}
 }
 
 // Main draw loop
 void draw()
 {
-  	radius = radius + sin( frameCount / 4 );
-	  
+	orgSelected = random(numOrgs);
+	
 	for (int i = 0; i < numOrgs; i++) 
 	{
 		// Track circle to new destination
 		X[i]+=(nX[i]-X[i])/delay;
 		Y[i]+=(nY[i]-Y[i])/delay;
+
+		// Track line to new destination
+		lineX[i]+=newLineX[i]-lineX[i]/delay;
+		lineY[i]+=newLineY[i]-lineY[i]/delay;
 	}	
 	  
-	// Set fill-color to blue
-	fill( 0, 121, 184 );
-	  
 	// Set stroke-color white
-	stroke( 255 ); 
+	//stroke( 255 ); 
 
 	// Fill canvas grey
 	background( 100 );
 
 	// Draw circle
-	for (int i = 0; i < numOrgs; i++) {
-		ellipse( X[i], Y[i], radius, radius );
+	for (int i = 0; i < numOrgs; i++) 
+	{
+		radius[i] = radius[i] + sin( frameCount / pulseRate[i] );
+		fill( orgColor1[i], orgColor2[i], orgColor3[i] );
+
+		stroke ( 255 );
+		line( X[i], Y[i], lineX[i], lineY[i] );
+
+		noStroke();
+		ellipse( X[i], Y[i], radius[i], radius[i] );
 	} 
 
 
-	if (count == 10) 
+	if (count == 1) 
 	{
 		for (int i = 0; i < numOrgs; i++) 
 		{
 			nX[i] = random(width);
 			nY[i] = random(height); 
+
+			orgColor1[i] = random(255);
+			orgColor2[i] = random(255);
+			orgColor3[i] = random(255);
+
+			// div size: 288 by 160
+			if ((width/2 - 144) < nX[i] && nX[i] < (width/2))
+				nX[i] -= 160;
+			else if ((width/2) < nX[i] && nX[i] < (width/2 + 144))
+				nX[i] += 160;
+
+			if ((height/2 - 144) < nY[i] && nY[i] < (height/2))
+				nY[i] -= 100;
+			else if((height/2) < nY[i] && nY[i] < (height/2 + 144)) 
+				nX[i] += 100;
 		} 
 	}
-
-	count++
-	if (count == 100) 
+	else if (count == maxTime - 55)
+	{
+		delay = 10;
+		for (int i = 0; i < numOrgs; i++)
+		{
+			nX[i] = width / 2;
+			nY[i] = height / 2;
+		}
+	}
+	else if (count == (maxTime - 10)) 
+	{
+		delay = 60;
+	}	
+	else if (count == maxTime)
 	{
 		count = 0;
-	}                    
+	}
+
+	if (count == random(100, maxTime - 60))
+	{
+		newLineX[orgSelected] = (X[i] + radius[i] * cos (random(1,100))) * 2;
+		newLineY[orgSelected] = (Y[i] + radius[i] * sin (random(1,100))) * 2; 
+	}
+
+	count++;                 
 }
 
 
 // Set circle's next destination
 void mouseClicked()
 {
-	for (int i = 0; i < numOrgs; i++) 
+	/*for (int i = 0; i < numOrgs; i++) 
 	{
 		nX[i] = random(width);
 		nY[i] = random(height);  
-	}	
+	}	*/
 }
 </script>
 
