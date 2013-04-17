@@ -1,135 +1,130 @@
 $(document).ready(function()
 {
+	// HTML elements used more than once are cached.
 	var $login = $('#login');
 	var $register = $('#register');
 	var $login_form = $('#login_form');
 	var $registration_form = $('#registration_form');
-	var $enter = $('#enter');
-	var $registration_submit = $('#registration_submit');
 	var $welcome_title = $('#welcome_title');
-	var $logged_in = $('#logged_in');
-	var $login_back = $('#login_back');
-	var $registration_back = $('#registration_back');
 
 	$login
 		.click(function()
 		{
 			$login.add($register)
-				.animate({'opacity': 0}, 500)
-				.delay(500)
-				.queue(function(nxt)
-				{
-					$(this)
-						.css('display', 'none');
-					$login_form
-						.css('display', 'block')
-						.animate({'opacity': 1}, 500);
-						nxt();
-				});
-
-			/*setTimeout(function()
-			{
-				$login_form
-					.css('display', 'block')
-					.animate({'opacity': 1}, 500);
-			}, 500);*/
+				.fadeOut(250);
+			$login_form
+				.delay(251)
+				.fadeIn(250);	
 		});
 
 	$register
 		.click(function()
 		{
 			$login.add($register)
-				.animate({'opacity': 0}, 500)
-				.delay(500)
-				.queue(function(nxt)
-				{
-					$(this)
-						.css('display', 'none');
-					$registration_form
-						.css('display', 'block')
-						.animate({'opacity': 1}, 500);	
-						nxt();
-				});
-
-			/*setTimeout(function()
-			{
-				$login.add($register)
-					.css('display', 'none');
-				$registration_form
-					.css('display', 'block')
-					.animate({'opacity': 1}, 500);	
-			}, 500);	*/
+				.fadeOut(250);
+			$registration_form
+				.delay(251)
+				.fadeIn(250);	
 		});
 
-	$enter.add($registration_submit)	
+	$('#enter').add($('#registration_submit'))
 		.click(function()
 		{
 			$welcome_title.add($login_form)
-				.animate({'opacity': 0}, 500)
-				.delay(500)
-				.queue(function(nxt)
-				{
-					$(this)
-						.css('display', 'none');
-					$logged_in
-						.css('display', 'block')
-						.animate({'opacity': 1}, 500);	
-				});
-			
-			/*setTimeout(function()
-			{
-				$welcome_title.add($login_form)
-					.css('display', 'none');
-				$logged_in
-					.css('display', 'block')
-					.animate({'opacity': 1}, 500);			
-			}, 500);*/
+				.fadeOut(250);
+			$('#logged_in')
+				.delay(251)
+				.fadeIn(250);	
 		});
 
-/*
 	$('#login_back, #registration_back')
 		.click(function()
 		{
-			$('.form')
-				.animate({'opacity': 0}, 500);
-			setTimeout(function()
-			{
-				$('.form')
-					.css('display', 'none');
-				$('#welcome_title, #login, #register')
-					.css('display', 'block')
-					.animate({'opacity': 1}, 500);
-			}, 500);	
-		});
-*/
-
-	$login_back
-		.click(function()
-		{
-			$login_form
-				.animate({'opacity': 0}, 500);
-			setTimeout(function()
-			{
-				$login_form
-					.css('display', 'none');
-				$welcome_title.add($login).add($register)
-					.css('display', 'block')
-					.animate({'opacity': 1}, 500);
-			}, 500);
+			$(this)
+				.parent()
+				.fadeOut(250);
+			$welcome_title.add($login).add($register)
+				.delay(251)
+				.fadeIn(250);
 		});
 
-	$registration_back
+	$('#username')
 		.click(function()
 		{
-			$registration_form
-				.animate({'opacity': 0}, 500);
-			setTimeout(function()
+			if ($(this).val().toLowerCase() == 'username or email' || $(this).val().toLowerCase() == 'username')
 			{
-				$registration_form
-					.css('display', 'none');
-				$welcome_title.add($login).add($register)
-					.css('display', 'block')
-					.animate({'opacity': 1}, 500);
-			}, 500);
+				$(this).val('');
+			}
+		})
+		.blur(function()
+		{
+			if ($(this).val() == '' || $(this).val().toLowerCase() == 'username')
+			{
+				$(this).val('Username or Email');
+			}
+		});
+
+	$('#password, #new_password')
+		.click(function()
+		{
+			if ($(this).val().toLowerCase() == 'password')
+			{
+				$(this).val('');
+			}
+		})
+		.blur(function()
+		{
+			if ($(this).val() == '')
+			{
+				$(this).val('Password');
+			}
+		});	
+
+	$('#new_username')
+		.click(function()
+		{
+			if ($(this).val().toLowerCase() == 'username')
+			{
+				$(this).val('');
+			}
+		})
+		.blur(function()
+		{
+			if ($(this).val() == '')
+			{
+				$(this).val('Username');
+			}
+		});		
+
+	$('#repeat_password')
+		.click(function()
+		{
+			if ($(this).val().toLowerCase() == 'repeat password')
+			{
+				$(this).val('');
+			}
+		})	
+		.blur(function()
+		{
+			if ($(this).val() == '')
+			{	
+				$(this).val('Repeat Password');
+			}
+		});	
+
+	$('#new_email')
+		.click(function()
+		{
+			if ($(this).val().toLowerCase() == 'email')
+			{
+				$(this).val('');
+			}
+		})
+		.blur(function()
+		{
+			if ($(this).val() == '')
+			{
+				$(this).val('Email');
+			}
 		});
 });

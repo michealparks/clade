@@ -1,229 +1,62 @@
 <!DOCTYPE HTML>
 
 <!-- Style -->
-<link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
 <link href='assets/css/stylesheet.css' rel='stylesheet' type='text/css'>
 
-<!-- Scripts -->
+<!-- Libraries -->
 <script src="assets/js/jquery-1.9.1.min.js"></script>
+<script src="assets/js/soundmanager2-jsmin.js"></script>
 <script src="assets/js/processing-1.4.1.min.js"></script>
+
+<!-- Scripts --> 
+<script src="assets/js/soundmanager.js"></script>
 <script type="text/javascript" src="assets/js/main.js"></script>
-<script type="text/processing" data-processing-target="mycanvas">
-
-// Global variables
-
-// Counting Variables
-int count = 0;
-int maxTime = 3070;
-
-int numOrgs = 15;
-float[] radius = new float[numOrgs];
-int[] X = new int[numOrgs];
-int[] Y = new int[numOrgs];
-int[] nX = new int[numOrgs];
-int[] nY = new int[numOrgs];
-int delay = 60;
-
-// Organism specific variables
-int[] orgColor1 = new int[numOrgs];
-int[] orgColor2 = new int[numOrgs];
-int[] orgColor3 = new int[numOrgs];
-int[] pulseRate = new int[numOrgs];
-
-// Organism offshoot specific variables
-float[] lineX = new float[numOrgs];
-float[] lineY = new float[numOrgs];
-float[] newLineX = new float[numOrgs];
-float[] newLineY = new float[numOrgs];
-int orgSelected = 0;
-
-
-// Setup the Processing Canvas
-void setup()
-{
-	if (jQuery(document).height() > jQuery(window).height())
-		setupHeight = jQuery(document).height() - 30;
-	else 
-		setupHeight = jQuery(window).height() - 30;
-	jQuery('canvas').width(jQuery(window).width());
-	jQuery('canvas').height(setupHeight);
-
-	size( jQuery(window).width(), setupHeight );		
-	strokeWeight( 2 );
-	frameRate( 60 );
-
-	for (int i = 0; i < numOrgs; i++) 
+<script>
+soundManager.setup
+({
+	url: '',
+	flashVersion: 9, // optional: shiny features (default = 8)
+	preferFlash: false, // optional: ignore Flash where possible, use 100% HTML5 mode
+	onready: function() 
 	{
-		X[i] = width / 2;
-		Y[i] = height / 2;
-		nX[i] = X[i];
-		nY[i] = Y[i];  
-
-		orgColor1[i] = random(255);
-		orgColor2[i] = random(255);
-		orgColor3[i] = random(255);
-
-		pulseRate[i] = 4;
-		radius[i] = 50.0;
-
-		lineX[i] = X[i];
-		lineY[i] = Y[i];
-		newLineX[i] = X[i];
-		newLineY[i] = Y[i];
+    // Ready to use; soundManager.createSound() etc. can now be called.
 	}
-}
-
-// Main draw loop
-void draw()
-{
-	orgSelected = random(numOrgs);
-	
-	for (int i = 0; i < numOrgs; i++) 
-	{
-		// Track circle to new destination
-		X[i]+=(nX[i]-X[i])/delay;
-		Y[i]+=(nY[i]-Y[i])/delay;
-
-		// Track line to new destination
-		lineX[i]+=newLineX[i]-lineX[i]/delay;
-		lineY[i]+=newLineY[i]-lineY[i]/delay;
-	}	
-	  
-	// Set stroke-color white
-	//stroke( 255 ); 
-
-	// Fill canvas grey
-	background( 100 );
-
-	// Draw circle
-	for (int i = 0; i < numOrgs; i++) 
-	{
-		radius[i] = radius[i] + sin( frameCount / pulseRate[i] );
-		fill( orgColor1[i], orgColor2[i], orgColor3[i] );
-
-		stroke ( 255 );
-		line( X[i], Y[i], lineX[i], lineY[i] );
-
-		noStroke();
-		ellipse( X[i], Y[i], radius[i], radius[i] );
-	} 
-
-
-	if (count == 1) 
-	{
-		for (int i = 0; i < numOrgs; i++) 
-		{
-			nX[i] = random(width);
-			nY[i] = random(height); 
-
-			orgColor1[i] = random(255);
-			orgColor2[i] = random(255);
-			orgColor3[i] = random(255);
-
-			// div size: 288 by 160
-			if ((width/2 - 144) < nX[i] && nX[i] < (width/2))
-				nX[i] -= 160;
-			else if ((width/2) < nX[i] && nX[i] < (width/2 + 144))
-				nX[i] += 160;
-
-			if ((height/2 - 144) < nY[i] && nY[i] < (height/2))
-				nY[i] -= 100;
-			else if((height/2) < nY[i] && nY[i] < (height/2 + 144)) 
-				nX[i] += 100;
-		} 
-	}
-	else if (count == maxTime - 55)
-	{
-		delay = 10;
-		for (int i = 0; i < numOrgs; i++)
-		{
-			nX[i] = width / 2;
-			nY[i] = height / 2;
-		}
-	}
-	else if (count == (maxTime - 10)) 
-	{
-		delay = 60;
-	}	
-	else if (count == maxTime)
-	{
-		count = 0;
-	}
-
-	if (count == random(100, maxTime - 60))
-	{
-		newLineX[orgSelected] = (X[i] + radius[i] * cos (random(1,100))) * 2;
-		newLineY[orgSelected] = (Y[i] + radius[i] * sin (random(1,100))) * 2; 
-	}
-
-	count++;                 
-}
-
-
-// Set circle's next destination
-void mouseClicked()
-{
-	/*for (int i = 0; i < numOrgs; i++) 
-	{
-		nX[i] = random(width);
-		nY[i] = random(height);  
-	}	*/
-}
+});
 </script>
 
 <head>
 	<title>Clade</title>
 </head>
 
-<html>
+<html lang="en">
 	<body>
 		<div id="welcome">
+			
 			<h1 id="welcome_title">Clade.</h1>
 			<h1 id="logged_in">Begin.</h1>
 			<div class="button" id="login">Login</div>
 			<div class="button" id="register">Register</div>
 
-				<table class="form" id="login_form">
-					<tr>
-						<td><h4>Username: </h4></td>
-						<td><input></input></td>
-					</tr>	
-						<td><h4>Password: </h4></td>
-						<td><input></input></td>
-					</tr>	
-					<tr>
-						<td colspan="2"><div class="button" id="enter" style="margin-bottom: 0;">Enter</div></td>
-					</tr>
-					<tr>	
-						<td colspan="2"><div class="button" id="login_back" style="margin-top: 0;">Back</div></td>
-					</tr>
-				</table>	
+			<div class="form" id="login_form">
+				<input id="username" value="Username or Email"/>
+				<input id="password" value="Password"/>
+				<div id="login_enter" class="button" id="enter">Enter</div>
+				<div class="button" id="login_back" style="margin-top: 0;">Back</div>
+			</div>
+			
+			<div class="form" id="registration_form">
+				<p>Choose your</p>
+				<input id="new_username" value="Username"/>
+				<input id="new_password" value="Password"/>
+				<input id="repeat_password" value="Repeat Password"/>
+				<input id="new_email" value="Email"/>
+				<div class="button" id="registration_submit">Enter</div>
+				<div class="button" id="registration_back">Back</div>
+			</div>		
+		</div> <!-- welcome -->
 
-				<table class="form" id="registration_form">
-					<tr>
-						<td><h4>New Username: </h4></td>
-						<td><input id="new_username"></input></td>
-					</tr>
-					<tr>
-						<td><h4>New Password: </h4></td>
-						<td><input id="new_password"></input></td>
-					</tr>	
-					<tr>
-						<td><h4>Repeat Password: </h4></td>
-						<td><input id="repeat_new_password"></input></td>
-					</tr>
-					<tr>
-						<td><h4>Email: </h4></td>
-						<td><input id="new_email"></input></td>
-					<tr>	
-						<td colspan="2"><div class="button" id="registration_submit" style="margin-bottom: 0;">Enter</div></td>
-					</tr>
-					<tr>	
-						<td colspan="2"><div class="button" id="registration_back" style="margin-top: 0;">Back</div></td>
-					</tr>	
-				</table>	
-		</div>		
+		<canvas id="login_canvas" data-processing-sources="clade-login.pde"></canvas>
+		<!--<canvas id="main_canvas" data-processing-sources="clade.pde"></canvas>-->
 
-		<canvas id="mycanvas"></canvas>
 	<body>
 </html>	
