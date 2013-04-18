@@ -1,15 +1,18 @@
 // Sound variables
-var mySound = soundManager.createSound({
-      id: 'aSound', 
-      url: 'assets/audio/clade_intro1.mp3'
-    });
+var mySound = soundManager.createSound(
+{
+	id: 'aSound', 
+	url: 'assets/audio/clade_intro1.mp3'
+});
 
-var mySound2 = soundManager.createSound({
-      id: 'aSound1', 
-      url: 'assets/audio/clade_intro2.mp3'
-    });
+var mySound2 = soundManager.createSound(
+{
+	id: 'aSound1', 
+	url: 'assets/audio/clade_intro2.mp3'
+});
 
-soundManager.setup({
+soundManager.setup(
+{
 	url: '',
 	flashVersion: 9, // optional: shiny features (default = 8)
 	preferFlash: false, // optional: ignore Flash where possible, use 100% HTML5 mode
@@ -26,11 +29,11 @@ int maxTime = 430;
 
 // Background color variables.
 int bg_color1 = 255, bg_color2 = 255, bg_color3 = 255; 
-int bg_dec1 = random(-50, 50), bg_dec2 = random(-50, 50), bg_dec3 = random(-50, 50);
+int bg_dec1 = random(100, 155), bg_dec2 = random(100, 155), bg_dec3 = random(100, 155);
 
 // Organism counting variables
 int numOrgs = 20; 
-float radius;
+float radius = 50.0;
 int[] X = new int[numOrgs]; 
 int[] Y = new int[numOrgs]; 
 int[] nX = new int[numOrgs]; 
@@ -57,6 +60,7 @@ void setup()
 		setupHeight = jQuery(document).height() - 30;
 	else 
 		setupHeight = jQuery(window).height() - 30; 
+
 	jQuery('canvas').width(jQuery(window).width()); 
 	jQuery('canvas').height(setupHeight); 
 
@@ -71,12 +75,11 @@ void setup()
 		nX[i] = X[i];
 		nY[i] = Y[i];  
 
-		orgColor1[i] = random(100, 175);	// We want colorful circles.
-		orgColor2[i] = random(255);
-		orgColor3[i] = random(255);
+		orgColor1[i] = random(100, 155);	// We want colorful circles.
+		orgColor2[i] = random(100, 155);
+		orgColor3[i] = random(100, 155);
 
-		pulseRate = 2;
-		radius = 50;
+		pulseRate = 4;
 
 		lineX[i] = X[i];
 		lineY[i] = Y[i];
@@ -100,32 +103,24 @@ void draw()
 		lineY[i]+=(newLineY[i]-lineY[i])/delay;
 	}	
 
-	newLineX[i] = (X[i] + radius * cos (random(1,10))) * 2;
-	newLineY[i] = (Y[i] + radius * sin (random(1,10))) * 2; 
+	newLineX[i] = (X[i] + radius * cos(random(0, PI * 2))) * 2;
+	newLineY[i] = (Y[i] + radius * sin(random(0, PI * 2))) * 2; 
 
 	// Bring the canvas color back to default.
-	if (bg_color1 > 100 + bg_dec1)
-	{	
+	if (bg_color1 > bg_dec1)
 		bg_color1--;
-	}	
-
-	if (bg_color2 > 100 + bg_dec2)
-	{
+	if (bg_color2 > bg_dec2)
 		bg_color2--;
-	}
-
-	if (bg_color3 > 100 + bg_dec3)
-	{
+	if (bg_color3 > bg_dec3)
 		bg_color3--;
-	}
 
 	background( bg_color1, bg_color2 , bg_color3 );
 
 	// Draw circles.
 	for (int i = 0; i < numOrgs; i++) 
 	{
-		if (count % 8 == 0)
-			radius = radius + sin( frameCount / pulseRate );
+		if (count % 10 == 0)
+			radius = radius + (sin( frameCount / 2 )/2);
 
 		fill( orgColor1[i], orgColor2[i], orgColor3[i] );
 
@@ -137,10 +132,13 @@ void draw()
 	} 
 	if (count == 0)
 	{
-		bg_dec1 = random(-50, 50);
-		bg_dec2 = random(-50, 50);
-		bg_dec3 = random(-50, 50);
 
+		// Reset background color values.
+		bg_dec1 = random(100, 155);
+		bg_dec2 = random(100, 155);
+		bg_dec3 = random(100, 155);
+
+		// Start background "explosion".
 		bg_color1 = 255;
 		bg_color2 = 255;
 		bg_color3 = 255;
@@ -191,10 +189,6 @@ void draw()
 		iterate++;
 	}
 
-	// if (count == random(100, maxTime - 60))
-	//{
-		
-	//}
 	if (count > 0)
 		count++;                 
 }

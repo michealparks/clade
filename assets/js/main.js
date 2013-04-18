@@ -60,11 +60,11 @@ $(document).ready(function()
 		{
 			if ($(this).val() == '' || $(this).val().toLowerCase() == 'username')
 			{
-				$(this).val('Username or Email');
+				$(this).val('USERNAME or EMAIL');
 			}
 		});
 
-	$('#password, #new_password')
+	$('#password')
 		.click(function()
 		{
 			if ($(this).val().toLowerCase() == 'password')
@@ -76,14 +76,30 @@ $(document).ready(function()
 		{
 			if ($(this).val() == '')
 			{
-				$(this).val('Password');
+				$(this).val('PASSWORD');
 			}
 		});	
+
+	$('#new_password')
+		.click(function()
+		{
+			if ($(this).val().toLowerCase() == 'new password')
+			{
+				$(this).val('');
+			}
+		})	
+		.blur(function()
+		{
+			if ($(this).val() == '')
+			{
+				$(this).val('NEW PASSWORD');
+			}
+		});
 
 	$('#new_username')
 		.click(function()
 		{
-			if ($(this).val().toLowerCase() == 'username')
+			if ($(this).val().toLowerCase() == 'new username')
 			{
 				$(this).val('');
 			}
@@ -92,7 +108,7 @@ $(document).ready(function()
 		{
 			if ($(this).val() == '')
 			{
-				$(this).val('Username');
+				$(this).val('NEW USERNAME');
 			}
 		});		
 
@@ -108,7 +124,7 @@ $(document).ready(function()
 		{
 			if ($(this).val() == '')
 			{	
-				$(this).val('Repeat Password');
+				$(this).val('REPEAT PASSWORD');
 			}
 		});	
 
@@ -124,7 +140,7 @@ $(document).ready(function()
 		{
 			if ($(this).val() == '')
 			{
-				$(this).val('Email');
+				$(this).val('EMAIL');
 			}
 		});
 });
