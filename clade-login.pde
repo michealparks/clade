@@ -70,8 +70,8 @@ void setup()
 
 	for (int i = 0; i < numOrgs; i++)
 	{
-		X[i] = width / 2;
-		Y[i] = height / 2;
+		X[i] = jQuery(window).width() / 2;
+		Y[i] = setupHeight / 2;
 		nX[i] = X[i];
 		nY[i] = Y[i];  
 
@@ -90,19 +90,7 @@ void setup()
 
 // Main draw loop.
 void draw()
-{
-	
-	for (int i = 0; i < numOrgs; i++) 
-	{
-		// Track circles to new destination.
-		X[i]+=(nX[i]-X[i])/delay;
-		Y[i]+=(nY[i]-Y[i])/delay;
-
-		// Track line to new destination.
-		lineX[i]+=(newLineX[i]-lineX[i])/delay;
-		lineY[i]+=(newLineY[i]-lineY[i])/delay;
-	}	
-
+{	
 	newLineX[i] = (X[i] + radius * cos(random(0, PI * 2))) * 2;
 	newLineY[i] = (Y[i] + radius * sin(random(0, PI * 2))) * 2; 
 
@@ -114,13 +102,22 @@ void draw()
 	if (bg_color3 > bg_dec3)
 		bg_color3--;
 
+	// Update background.
 	background( bg_color1, bg_color2 , bg_color3 );
+
+	// Update the pulsing radii. 
+	radius = radius + (sin((frameCount/2)/4)/2);
 
 	// Draw circles.
 	for (int i = 0; i < numOrgs; i++) 
 	{
-		if (count % 10 == 0)
-			radius = radius + (sin( frameCount / 2 )/2);
+		// Track circles to new destination.
+		X[i]+=(nX[i]-X[i])/delay;
+		Y[i]+=(nY[i]-Y[i])/delay;
+
+		// Track line to new destination.
+		lineX[i]+=(newLineX[i]-lineX[i])/delay;
+		lineY[i]+=(newLineY[i]-lineY[i])/delay;
 
 		fill( orgColor1[i], orgColor2[i], orgColor3[i] );
 
@@ -130,9 +127,9 @@ void draw()
 		//noStroke();
 		ellipse( X[i], Y[i], radius, radius );
 	} 
+
 	if (count == 0)
 	{
-
 		// Reset background color values.
 		bg_dec1 = random(100, 155);
 		bg_dec2 = random(100, 155);
@@ -146,18 +143,20 @@ void draw()
 		mySound.play();
 		count++;
 	}
+
 	if (count == 1) 
 	{
 		mySound2.play();
 		for (int i = 0; i < numOrgs; i++) 
 		{
-			nX[i] = random(width);
-			nY[i] = random(height); 
+			nX[i] = random(jQuery(window).width());
+			nY[i] = random(setupHeight); 
 
 			orgColor1[i] = random(255);
 			orgColor2[i] = random(255);
 			orgColor3[i] = random(255);
 
+			// This 
 			// div size: 288 by 160
 			if ((width/2 - 144) < nX[i] && nX[i] < (width/2))
 				nX[i] -= 160;
@@ -170,19 +169,22 @@ void draw()
 				nX[i] += 100;
 		} 
 	}	
+
 	if (count == maxTime - 55)
 	{
 		delay = 10;
 		for (int i = 0; i < numOrgs; i++)
 		{
-			nX[i] = width / 2;
-			nY[i] = height / 2;
+			nX[i] = jQuery(window).width() / 2;
+			nY[i] = setupHeight / 2;
 		}
 	}
+
 	if (count == (maxTime - 10)) 
 	{
 		delay = 60;
 	}	
+
 	if (count == maxTime)
 	{
 		count = 0;
@@ -190,7 +192,9 @@ void draw()
 	}
 
 	if (count > 0)
-		count++;                 
+	{
+		count++;        
+	}         
 }
 
 
