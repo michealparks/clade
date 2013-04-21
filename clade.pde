@@ -1,9 +1,3 @@
-/* 
- PROCESSINGJS.COM HEADER ANIMATION  
- MIT License - F1lT3R/Hyper-Metrix
- Native Processing Compatible 
- */
-
 // Set number of circles
 int count = 50;
 
